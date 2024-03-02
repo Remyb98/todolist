@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Task index{% endblock %}
+
+{% block body %}
+  <h1>Task index</h1>
+
+  <table class="table table-hover table-bordered">
+    <thead>
+    <tr>
+      <th>{{ knp_pagination_sortable(pagination, '#', 't.id') }}</th>
+      <th>{{ knp_pagination_sortable(pagination, 'Title', 't.title') }}</th>
+      <th>{{ knp_pagination_sortable(pagination, 'State', 't.state') }}</th>
+      <th>{{ knp_pagination_sortable(pagination, 'Author', 'createdBy.username') }}</th>
+      <th>{{ knp_pagination_sortable(pagination, 'Assignee', 'assignee.username') }}</th>
+      <th>{{ knp_pagination_sortable(pagination, 'Deadline', 't.dueDate') }}</th>
+      <th>{{ knp_pagination_sortable(pagination, 'Creation date', 't.createdAt') }}</th>
+      <th>{{ knp_pagination_sortable(pagination, 'Last update by', 'updatedBy.username') }}</th>
+      <th>{{ knp_pagination_sortable(pagination, 'Last update', 't.updatedAt') }}</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for task in pagination %}
+      <tr class="{{ (task.assignee == app.user) ? 'table-success': '' }}">
+        <td class="text-center">{{ task.id }}</td>
+        <td>{{ task.title }}</td>
+        <td>{{ task.state.value }}</td>
+        <td>{{ task.createdBy.username }}</td>
+        <td>{{ task.assignee.username ?? '' }}</td>
+        <td>{{ task.dueDate ? task.dueDate|date('Y-m-d') : '' }}</td>
+        <td>{{ task.createdAt ? task.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+        <td>{{ task.updatedBy.username ?? '' }}</td>
+        <td>{{ task.updatedAt ? task.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+        <td class="text-center">
+          <a class="btn btn-primary btn-sm" href="{{ path('app_task_edit', {'id': task.id}) }}">edit</a>
+        </td>
+      </tr>
+    {% else %}
+      <tr>
+        <td colspan="7">no records found</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <div class="navigation">
+    {{ knp_pagination_render(pagination) }}
+  </div>
+
+  <a href="{{ path('app_task_new') }}">Create new</a>
+{% endblock %}

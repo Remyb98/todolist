@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+Hello {{ user.username }}
+
+There is your daily recap.
+
+<h2>Coming tasks :</h2>
+<ul>
+  {% for task in comingTasks %}
+    <li>{{ task.title }} - {{ task.dueDate|date('Y-m-d') }}</li>
+  {% endfor %}
+</ul>
+
+<h2>Late tasks :</h2>
+<ul>
+  {% for task in lateTasks %}
+    <li>{{ task.title }} - {{ task.dueDate|date('Y-m-d') }}</li>
+  {% endfor %}
+</ul>
+</body>
+</html>
